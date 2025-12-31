@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>???</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --neon: #DFFF00;
+            --black: #0a0a0a;
+            --chrome: linear-gradient(180deg, #e8e8e8 0%, #a8a8a8 25%, #e8e8e8 50%, #a8a8a8 75%, #e8e8e8 100%);
+        }
+        
+        body {
+            background: var(--black);
+            color: var(--neon);
+            font-family: 'Space Mono', monospace;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        /* LANDING / PASSWORD SCREEN */
+        #landing {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 2rem;
+        }
+        
+        .hint {
+            font-size: 0.75rem;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            opacity: 0.6;
+        }
+        
+        .password-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        #password-input {
+            background: transparent;
+            border: none;
+            border-bottom: 1px solid var(--neon);
+            color: var(--neon);
+            font-family: 'Space Mono', monospace;
+            font-size: 1rem;
+            padding: 0.5rem;
+            text-align: center;
+            width: 280px;
+            outline: none;
+        }
+        
+        #password-input::placeholder {
+            color: var(--neon);
+            opacity: 0.3;
+        }
+        
+        #password-input.shake {
+            animation: shake 0.5s ease-in-out;
+        }
+        
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20% { transform: translateX(-10px); }
+            40% { transform: translateX(10px); }
+            60% { transform: translateX(-10px); }
+            80% { transform: translateX(10px); }
+        }
+        
+        .enter-btn {
+            background: transparent;
+            border: 1px solid var(--neon);
+            color: var(--neon);
+            font-family: 'Space Mono', monospace;
+            font-size: 0.7rem;
+            letter-spacing: 0.2em;
+            padding: 0.5rem 2rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .enter-btn:hover {
+            background: var(--neon);
+            color: var(--black);
+        }
+        
+        /* LETTER SCREEN */
+        #letter {
+            display: none;
+            min-height: 100vh;
+            padding: 4rem 2rem;
+            position: relative;
+        }
+        
+        .date-mark {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            font-size: 0.7rem;
+            letter-spacing: 0.1em;
+            opacity: 0.6;
+        }
+        
+        .letter-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        .letter-header h1 {
+            font-size: 1.2rem;
+            letter-spacing: 0.5em;
+            text-transform: uppercase;
+            color: var(--neon);
+        }
+        
+        .letter-content {
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.8;
+            font-size: 0.85rem;
+        }
+        
+        .letter-content p {
+            margin-bottom: 1.5rem;
+            text-align: justify;
+        }
+        
+        .letter-content .salutation {
+            font-size: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .ascii-scene {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 11px;
+            line-height: 1.15;
+            white-space: pre;
+            text-align: center;
+            margin: 2.5rem auto;
+            padding: 1rem;
+            border: 1px solid var(--neon);
+            display: inline-block;
+            box-shadow: 0 0 15px rgba(223, 255, 0, 0.2);
+        }
+        
+        .gift-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 3rem;
+            margin-bottom: 2rem;
+        }
+        
+        .gift-ascii {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 14px;
+            line-height: 1.1;
+            white-space: pre;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-shadow: 0 0 10px var(--neon);
+            text-align: left;
+        }
+        
+        .gift-ascii:hover {
+            text-shadow: 0 0 20px var(--neon), 0 0 40px var(--neon);
+            transform: scale(1.05);
+        }
+        
+        .gift-ascii .chrome-text {
+            background: var(--chrome);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .tap-prompt {
+            font-size: 0.65rem;
+            letter-spacing: 0.3em;
+            opacity: 0.5;
+            animation: pulse 2s infinite;
+            margin-top: 1rem;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 0.8; }
+        }
+        
+        /* SNAKE GAME SCREEN */
+        #snake-game {
+            display: none;
+            height: 100vh;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        #snake-canvas {
+            border: 1px solid var(--neon);
+            box-shadow: 0 0 20px rgba(223, 255, 0, 0.3);
+        }
+        
+        .score-display {
+            font-size: 0.75rem;
+            letter-spacing: 0.2em;
+        }
+        
+        .game-instructions {
+            font-size: 0.6rem;
+            opacity: 0.5;
+            letter-spacing: 0.1em;
+        }
+        
+        /* REVEAL SCREEN */
+        #reveal {
+            display: none;
+            min-height: 100vh;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+            text-align: center;
+        }
+        
+        .reveal-line {
+            font-size: 1.1rem;
+            line-height: 2;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        
+        .reveal-line.visible {
+            animation: revealIn 0.6s ease forwards;
+        }
+        
+        @keyframes revealIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .reveal-line.emphasis {
+            font-size: 1.4rem;
+            background: var(--chrome);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .reveal-line.small {
+            font-size: 0.8rem;
+            opacity: 0;
+        }
+        
+        .final-chrome {
+            margin-top: 3rem;
+            height: 2px;
+            width: 100px;
+            background: var(--chrome);
+        }
+        
+        /* MOBILE CONTROLS */
+        .mobile-controls {
+            display: none;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+        
+        .mobile-btn {
+            width: 50px;
+            height: 50px;
+            background: transparent;
+            border: 1px solid var(--neon);
+            color: var(--neon);
+            font-size: 1.2rem;
+            cursor: pointer;
+        }
+        
+        .mobile-btn:active {
+            background: var(--neon);
+            color: var(--black);
+        }
+        
+        .controls-row {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        @media (max-width: 768px) {
+            .mobile-controls {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .game-instructions {
+                display: none;
+            }
+        }
+        
+        /* GLITCH EFFECT */
+        .glitch {
+            animation: glitch 0.3s ease;
+        }
+        
+        @keyframes glitch {
+            0% { filter: none; }
+            20% { filter: hue-rotate(90deg) saturate(2); }
+            40% { filter: hue-rotate(180deg) invert(0.8); }
+            60% { filter: hue-rotate(270deg) saturate(3); }
+            80% { filter: hue-rotate(360deg) brightness(1.5); }
+            100% { filter: none; }
+        }
+    </style>
+</head>
+<body>
+    <!-- LANDING -->
+    <div id="landing">
+        <div class="hint">where did we first meet + " thanks to " + app<br><span style="opacity: 0.4; font-size: 0.6rem;">all in lower case!</span></div>
+        <div class="password-container">
+            <input type="text" id="password-input" placeholder="..." autocomplete="off">
+            <button class="enter-btn" onclick="checkPassword()">ENTER</button>
+        </div>
+    </div>
+    
+    <!-- LETTER -->
+    <div id="letter">
+        <div class="date-mark">21.12.25</div>
+        <div class="letter-content">
+            <p class="salutation">hoi my little catfish,</p>
+            
+            <p>little did i know my catfish would turn out to be my lil' gold fish. very good feng shui. auspicious. it has been such a short time but i sometimes think back to how i met you. i remember when i first saw ur feeld profile, i don't recall much ab it except a short description (green flag) and a good looking face, damn. that golden hour dune photo. 10/10 would fuck, that's the face i wanna see when i look down to a man eating outta me. it's your boyishness that is my weakness.</p>
+            
+            <p>i was disappointed we didn't meet the same day we matched, man, i was ready to face fuck u. fast forward a week, happy days huh. certainly gave a happy night and even more happy days.</p>
+            
+            <p>i'll be honest, sitting there i wondered ab ur gay voice and how i'd look at u knowing we fucked over voice memos...something i did once or twice in my lifetime but didn't remember doing, especially not b4 meeting the dude. then you walked in, i did a double take: i thought, is that him? really?</p>
+            
+            <div style="text-align: center;">
+            <pre class="ascii-scene">
+┌─────────────────────────────────────────────────────────┐
+│    BRUINE KROEG                              ◯    ◯    │
+│  ┌──────────────────────────────────────┐              │
+│  │ ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓ │    ║  ║    │
+│  │ ▓  HEINEKEN  ▓  AMSTEL  ▓  GROLSCH ▓ │    ║  ║    │
+│  │ ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓ │    ║  ║    │
+│  └──────────────────────────────────────┘   ╔════╗    │
+│                                              ║    ║    │
+│    ∧＿∧    ┌──┐                              ║ ▊  ║    │
+│   (◉ω◉ )   │▒▒│     ∧＿∧                     ╚════╝    │
+│   /   づ♡  └──┘    ( ´・ω・) ＜ yo                     │
+│  ════════════════════════════════════════════════     │
+│   ┃    ┃    ┃    ┃    ┃    ┃    ┃    ┃    ┃    ┃     │
+│   ┗━━━━┛    ┗━━━━┛    ┗━━━━┛    ┗━━━━┛    ┗━━━━┛     │
+└─────────────────────────────────────────────────────────┘
+            </pre>
+            </div>
+
+            <p>you kept walking towards me and sat next to me. what, it's really you? no way, who is this chubby nerd, nose weighed down with cartoonish glasses, lenses so thick they made ur eyes tiny. damn, sucks i thought but then whatever, we probs won't fuck but we can have a good time.</p>
+            
+            <p>man, but you weren't an idiot. you took off ur glasses and wiped it extensively. ah, that's that face. then you sucked me in, making me talk ab my conspiracy theories... wah, and not only did u laugh at my jokes, which is to be expected, ofc, but u made me laugh too. u were funny, or i was already subconsciously simping. ahahah, "do u live close by?" i asked after the third glass. third time's the charm. i was kinda shy ab it, following close behind. somehow, for a man a colleague teases looks like the biggest virgin, you stood tall and said sentences that took me by surprise... the sort of sentences that make me realise you're a man i'd want by my side). i can't quite put my finger on it. i hope one day i'll be be able to diagnose it.</p>
+            
+            <p>getting to urs, i did wonder, "now what?". i think we both were... after all, you did mention we had nothing in common, yet we had amazing sex. it's odd to think i just asked to watch a movie. i suppose i was that comfortable to just fall asleep at urs if all else failed... or would i be? do you remember how it all happened from there?</p>
+            
+            <p>15 hours later, i got to leave with the rosiest cheeks and left your parents with the nastiest stinking bedroom for their visit. i didn't know what would happen next, did you have an idea?</p>
+            
+            <p>and speaking of the third time, that presentation date. the fact that you encouraged me after i "joked" ab making a presentation, well, bby, i was hoping u'd bite my bait, and u did, i thought, wah, guus, name I cannot pronounce, you're mine to care for.</p>
+            
+            <p>i know things have been quite fast, but so far, this honeymoon phase is fire af babe. i'm excited to find out if this makes sense but i'm gonna make sure i do it right: i'll be 100% unfiltered with you, i will be conscious to. forgive me if i may omit or withhold information i need more time to chew on... or if i'm too honest in public and give you social anxiety. often what we appreciate most in someone may serve the nail that screeches the chalkboard at another point. let's be patient with each other and try to understand one another. it's a shame that we all happened so fast, i can only reflect on how you make me feel and what you've told me rather than my continued observation of you towards the world around you at this point.</p>
+            
+            <p>irregardless, it's your birthday baby, it's a precious day and it's a miracle to be born. i thank your parents for that face and ass they endowed you with, and the personalities that come to define you today, that guy i met in the bar and that guy i said "see you" at the airport. i don't think life was super easy for you growing up, but you allowed it to give you character and moved on. i don't think you're 100% happy with where you're at but i think you realise that you've set things up in such a way to get there, whatever it is, and i hope you're proud of yourself and you understand you are making motion even if it leads to ups and downs, it's ab the avg. i wish i could have my nose in between your hairy tits right now, but i'll wait.</p>
+        </div>
+        
+        <div class="gift-section">
+            <div class="gift-ascii" onclick="startSnake()">
+<pre>                            ' ' ' '
+                            G U U S
+                          /⌒⌒⌒⌒⌒⌒⌒\
+        ∧＿,,∧          (ノ^υ^υ^υ^υ^ㄑ)
+       ( ´・ω・)        │══════════════════════│
+        /   O=         │<span class="chrome-text">☆</span>★<span class="chrome-text">☆</span>★<span class="chrome-text">☆</span>★<span class="chrome-text">☆</span>│
+       /    ││<span class="chrome-text">☆</span>≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡<span class="chrome-text">☆</span>
+      し'￣(＿))    (＿))    (＿))    (＿))    (＿)),,</pre>
+            </div>
+            <div class="tap-prompt">☞ TAP TO UNWRAP ☜</div>
+        </div>
+    </div>
+    
+    <!-- SNAKE GAME -->
+    <div id="snake-game">
+        <div class="score-display">SCORE: <span id="score">0</span> / 10</div>
+        <canvas id="snake-canvas" width="300" height="300"></canvas>
+        <div class="game-instructions">ARROW KEYS TO MOVE</div>
+        <div class="mobile-controls">
+            <button class="mobile-btn" onclick="setDirection('up')">↑</button>
+            <div class="controls-row">
+                <button class="mobile-btn" onclick="setDirection('left')">←</button>
+                <button class="mobile-btn" onclick="setDirection('down')">↓</button>
+                <button class="mobile-btn" onclick="setDirection('right')">→</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- REVEAL -->
+    <div id="reveal">
+        <div class="reveal-line" data-delay="0">i'm so gay for u,</div>
+        <div class="reveal-line" data-delay="600">i want u to bend me over</div>
+        <div class="reveal-line" data-delay="1200">and desecrate me, whenever and wherever</div>
+        <div class="reveal-line" data-delay="1800">i can't object</div>
+        <div class="reveal-line" data-delay="2400">consider this a coupon</div>
+        <div class="reveal-line" data-delay="3200">─────────</div>
+        <div class="reveal-line small" data-delay="4000">oh and i love that you save money, so i wanna chip in :3</div>
+        <div class="reveal-line small" data-delay="4800">my birthday present for you is a day or night out</div>
+        <div class="reveal-line small" data-delay="5400">when i'm back (your choice)</div>
+        <div class="reveal-line emphasis" data-delay="6200">and €100 for ur trade republic!</div>
+        <div class="reveal-line" data-delay="7000">happy birthday!</div>
+        <div class="reveal-line" data-delay="7800">♡</div>
+        <div class="final-chrome reveal-line" data-delay="8500"></div>
+    </div>
+
+    <script>
+        // PASSWORD CHECK
+        function checkPassword() {
+            const input = document.getElementById('password-input');
+            const password = input.value.toLowerCase().trim();
+            
+            if (password === 'happy days thanks to feeld') {
+                document.getElementById('landing').style.display = 'none';
+                document.getElementById('letter').style.display = 'block';
+                window.scrollTo(0, 0);
+            } else {
+                input.classList.add('shake');
+                document.body.classList.add('glitch');
+                setTimeout(() => {
+                    input.classList.remove('shake');
+                    document.body.classList.remove('glitch');
+                }, 500);
+                input.value = '';
+            }
+        }
+        
+        document.getElementById('password-input').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') checkPassword();
+        });
+        
+        // SHOW GIFT BOX - now inline, just starts snake
+        
+        // SNAKE GAME
+        let canvas, ctx;
+        let snake = [{x: 150, y: 150}];
+        let direction = 'right';
+        let nextDirection = 'right';
+        let food = {x: 0, y: 0};
+        let score = 0;
+        let gameLoop;
+        const gridSize = 15;
+        const gameSpeed = 120;
+        
+        function startSnake() {
+            document.getElementById('letter').style.display = 'none';
+            document.getElementById('snake-game').style.display = 'flex';
+            
+            canvas = document.getElementById('snake-canvas');
+            ctx = canvas.getContext('2d');
+            
+            snake = [{x: 150, y: 150}];
+            direction = 'right';
+            nextDirection = 'right';
+            score = 0;
+            document.getElementById('score').textContent = score;
+            
+            placeFood();
+            gameLoop = setInterval(updateGame, gameSpeed);
+        }
+        
+        function placeFood() {
+            food.x = Math.floor(Math.random() * (canvas.width / gridSize)) * gridSize;
+            food.y = Math.floor(Math.random() * (canvas.height / gridSize)) * gridSize;
+            
+            // Make sure food doesn't spawn on snake
+            for (let segment of snake) {
+                if (segment.x === food.x && segment.y === food.y) {
+                    placeFood();
+                    return;
+                }
+            }
+        }
+        
+        function updateGame() {
+            direction = nextDirection;
+            
+            const head = {x: snake[0].x, y: snake[0].y};
+            
+            switch(direction) {
+                case 'up': head.y -= gridSize; break;
+                case 'down': head.y += gridSize; break;
+                case 'left': head.x -= gridSize; break;
+                case 'right': head.x += gridSize; break;
+            }
+            
+            // Wrap around walls
+            if (head.x < 0) head.x = canvas.width - gridSize;
+            if (head.x >= canvas.width) head.x = 0;
+            if (head.y < 0) head.y = canvas.height - gridSize;
+            if (head.y >= canvas.height) head.y = 0;
+            
+            // Check self collision
+            for (let segment of snake) {
+                if (head.x === segment.x && head.y === segment.y) {
+                    clearInterval(gameLoop);
+                    setTimeout(startSnake, 1000);
+                    return;
+                }
+            }
+            
+            snake.unshift(head);
+            
+            // Check food collision
+            if (head.x === food.x && head.y === food.y) {
+                score++;
+                document.getElementById('score').textContent = score;
+                
+                if (score >= 10) {
+                    clearInterval(gameLoop);
+                    setTimeout(showReveal, 500);
+                    return;
+                }
+                
+                placeFood();
+            } else {
+                snake.pop();
+            }
+            
+            draw();
+        }
+        
+        function draw() {
+            // Clear canvas
+            ctx.fillStyle = '#0a0a0a';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            // Draw food (chrome color)
+            ctx.fillStyle = '#c0c0c0';
+            ctx.shadowColor = '#ffffff';
+            ctx.shadowBlur = 10;
+            ctx.fillRect(food.x, food.y, gridSize - 2, gridSize - 2);
+            ctx.shadowBlur = 0;
+            
+            // Draw snake (neon yellow)
+            ctx.fillStyle = '#DFFF00';
+            ctx.shadowColor = '#DFFF00';
+            ctx.shadowBlur = 5;
+            for (let segment of snake) {
+                ctx.fillRect(segment.x, segment.y, gridSize - 2, gridSize - 2);
+            }
+            ctx.shadowBlur = 0;
+        }
+        
+        function setDirection(dir) {
+            const opposites = {up: 'down', down: 'up', left: 'right', right: 'left'};
+            if (dir !== opposites[direction]) {
+                nextDirection = dir;
+            }
+        }
+        
+        document.addEventListener('keydown', function(e) {
+            switch(e.key) {
+                case 'ArrowUp': setDirection('up'); e.preventDefault(); break;
+                case 'ArrowDown': setDirection('down'); e.preventDefault(); break;
+                case 'ArrowLeft': setDirection('left'); e.preventDefault(); break;
+                case 'ArrowRight': setDirection('right'); e.preventDefault(); break;
+            }
+        });
+        
+        // SHOW REVEAL
+        function showReveal() {
+            document.getElementById('snake-game').style.display = 'none';
+            document.getElementById('reveal').style.display = 'flex';
+            
+            const lines = document.querySelectorAll('.reveal-line');
+            lines.forEach(line => {
+                const delay = parseInt(line.dataset.delay);
+                setTimeout(() => {
+                    line.classList.add('visible');
+                }, delay);
+            });
+        }
+    </script>
+</body>
+</html>
